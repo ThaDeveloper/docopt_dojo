@@ -1,16 +1,17 @@
 class Dojo:
     pass
 
-class Person:
+class Person(Dojo):
     pass
 
-class Fellow:
+class Fellow(Person):
     pass
-class Staff:
+class Staff(Person):
     pass
 
-class Room:
+class Room(Dojo):
     pass
-class Office:
+class Office(Room):
     pass
-class LivingSpace:
+class LivingSpace(Room):
+    pass

@@ -1,6 +1,5 @@
 import unittest
-from dojo import Dojo
-
+from docopt_dojo.src.dojo import Dojo
 
 class TestAddPerson(unittest.TestCase):
     def test_add_person_successfully(self):
@@ -27,8 +26,8 @@ class TestCreateRoom(unittest.TestCase):
 
     def test_room_type(self):
         room = Room()
-        the hood = room.create_room("the hood", "living space")
-        self.assertEqual("the hood", the hood)
+        the_hood = room.create_room("the hood", "living space")
+        self.assertEqual("the hood", the_hood)
 class TestDojoAllocation(unittest.TestCase):
     def test_room_required(self):
         person = Person()
