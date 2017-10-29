@@ -37,10 +37,23 @@ class Staff(Person):
         super().__init__(name, role="Staff")
 
 class Room(Dojo):
-    pass
+    def __init__(self, room_type, room_name):
+        self.room_type = room_type
+        self.room_name = room_name
+    def create_room(self):
+        if self.room_type == "Office":
+            return "The {} {} was created.".format(self.room_type, self.room_name.upper())
+        elif self.room_type == "Living Space":
+            return "The {} {} was created.".format(self.room_type, self.room_name.upper())
+        else:
+            return "No such room can be created"
+
 class Office(Room):
-    pass
+    """Inherits from Room"""
+    def __init__(self, room_type, room_name):
+        super().__init__(room_name, room_type = "Office")
 class LivingSpace(Room):
-    pass
-j = Person("justin ndwiga")
-print(j.add_person("Fellow","N"))
+    """Inherits from Room"""
+    def __init__(self, room_type, room_name):
+        super().__init__(room_name, room_type = "Living Space")
+
