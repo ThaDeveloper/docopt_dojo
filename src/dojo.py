@@ -3,16 +3,11 @@ living = ''
 all_rooms = {}
 class Dojo:
     def __init__(self):
-        self.all_persons = []
-        #self.room_type = room_type
-        #all_rooms = {}
-        #self.allocations = allocations
-
-
+        pass
+        #self.all_persons = []
+      
 class Room(Dojo):
     def __init__(self, room_type, room_name):
-        #Dojo.__init__(self,all_rooms)
-        #all_rooms = {}
         self.room_type = room_type
         self.room_name = room_name
        
