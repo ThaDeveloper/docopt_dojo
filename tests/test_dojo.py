@@ -1,39 +1,72 @@
 import unittest
-from docopt_dojo.src.dojo import Dojo
+from src.person import Staff, Fellow
+from src.room import Office, LivingSpace
 
-class TestAddPerson(unittest.TestCase):
-    def test_add_person_successfully(self):
-        person = Person()
-        initial_person_count = len(person.all_persons)
-        justin = person.add_person("justin", "fellow")
-        self.assertTrue(justin)
-        new_person_count = len(person.all_persons)
-        self.assertEqual(new_person_count - initial_person_count, 1)
+class TestPersonClassFunctionality(unittest.TestCase):
+    '''
+    This class is effectively used to manage the basics
+    of how the Person class passes its properties to
+    Fellow and Staff and handles how they are managed.
+    '''
 
-    def test_person_role(self):
-        person = Person()
-        justin = person.add_person("justin", "staff")
-        self.assertEqual("justin", justin)
+    def test_staff_person_type(self):
+        s = Staff('Felicity', 'Smoke')
+        self.assertEqual(s.person_type, 'Staff')
+        # string formatting should occur as highlited above
 
-class TestCreateRoom(unittest.TestCase):
-    def test_create_room_successfully(self):
-        room = Room()
-        initial_room_count = len(room.all_rooms)
-        finance = room.create_room("finance", "office space")
-        self.assertTrue(finance)
-        new_room_count = len(room.all_rooms)
-        self.assertEqual(new_room_count - initial_room_count, 1)
+    def test_fellow_person_type(self):
+        s = Fellow('Elon', 'Musk')
+        self.assertEqual(s.person_type, 'Fellow')
 
-    def test_room_type(self):
-        room = Room()
-        the_hood = room.create_room("the hood", "living space")
-        self.assertEqual("the hood", the_hood)
-class TestDojoAllocation(unittest.TestCase):
-    def test_room_required(self):
-        person = Person()
-        justin = person.add_person("justin", "fellow")
-        opt = person.living_opt(justin, 1)
-        self.assertEqual(justin.find_room(justin,opt), ["office", "living space"])
+
+class TestRoomClassFunctionality(unittest.TestCase):
+    """docstring for TestRoomClassFunctionality
+    This Class Checks to make sure the objects created are indeed
+    instances of the classes that they are instantiated from.
+    It also mocks some of the methods and ensures they return
+    values as expected.
+        """
+
+    def test_office_is_instance_of_class_Office(self):
+        '''
+        This simply tests that the room type and room_name are passed
+        accordingly for a office. The second assert tests whether string
+        formatting actually occurred
+        '''
+        office = Office('star_labs')
+        self.assertEqual('Office', office.room_type)
+        self.assertNotEqual('star_labs', office.room_name)
+
+    def test_living_space_is_instance_of_class_LivingSpace(self):
+        ls = LivingSpace('maskani')
+        self.assertEqual('Living Space', ls.room_type)
+
+    def test_capacity_of_objects(self):
+        """
+        The capacity of an office is set to 6
+        and that of a living space is set to 4.
+        This assert confirms that.
+        """
+        office = Office('server')
+        ls = LivingSpace('bedroom')
+        self.assertEqual(office.capacity, 6)
+        self.assertEqual(ls.capacity, 4)
+
+    def test_capacity_reduces_by_one_for_living_space(self):
+        '''
+        The mock method here abstracts the room occupants indeed do
+        decrease by one when the add person function is called.
+        '''
+        ls = LivingSpace('envy')
+        self.assertEqual(ls.add_person('one'), 3)
+
+    def test_capacity_reduces_by_one_for_office(self):
+        '''
+        The mock method here abstracts the room occupants indeed do
+        decrease by one when the add person function is called.
+        '''
+        of = Office('Bruce')
+        self.assertEqual(of.add_person('one'), 5)
 
 if __name__ == '__main__':
     unittest.main()
