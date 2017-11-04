@@ -1,39 +1,48 @@
-"""
-    Usage:
-        create_room <type_room> <room_name>...
-        add_person <person_name> <FELLOW|STAFF> [wants_accommodation]
-        dojo (-h | --help | --version)
-    Options:
-        -h, --help  Show this screen and exit.
-"""
 
-import sys
+"""
+This is Dojo!
+Usage:
+    create_room (L|O) <room_name>...
+    add_person <first_name> <last_name> <role> [--accomodate=N]
+    (-i | --interactive)
+Options:
+    -h --help     Show this screen.
+    -v --version
+"""
+import os
+import click
 import cmd
-from termcolor import colored
 from docopt import docopt, DocoptExit
+#from ui import enter_dojo, exit_bar
+from dojo import Dojo
 
-def docopt_cmd(func):
+
+dojo = Dojo()
+
+
+def parse(func):
     """
-    This decorator is used to simplify the try/except block and pass the result
+    Essentially a decorator that simplifies the try/except block relays result
     of the docopt parsing to the called action.
-    Credit to Docopt doumentation examples.(interactive example)
+    i.e @args_cmd thereafter.
     """
+
     def fn(self, arg):
         try:
             opt = docopt(fn.__doc__, arg)
 
         except DocoptExit as e:
-            # The DocoptExit is thrown when the args do not match.
-            # We print a message to the user and the usage block.
-
-            print('Invalid Command!')
+            # Throws an Invalid Command message when arguments
+            # do not match what is outlined in the __doc__ string.
+            msg = 'Invalid Command'
+            print(msg)
             print(e)
             return
-        except SystemExit:
-            # The SystemExit exception prints the usage for --help
-            # We do not need to do the print here.
 
+        except SystemExit:
+            # Show help
             return
+
         return func(self, opt)
 
     fn.__name__ = func.__name__
@@ -41,20 +50,53 @@ def docopt_cmd(func):
     fn.__dict__.update(func.__dict__)
     return fn
 
-class DojoInteractive(cmd.Cmd):
-    intro = colored('Starting Dojo App.....', 'green', attrs=['bold'])
-    prompt = colored('DOJO >>>', 'red', attrs=['bold','blink'])
 
-    @docopt_cmd
+def start():
+
+    #enter_dojo()
+    arguments = __doc__
+    print(arguments)
+
+
+dojo = Dojo()
+
+
+class Interactive_Dojo(cmd.Cmd):
+
+    prompt = '(dojo)===> '
+
+    @parse
     def do_create_room(self, args):
-        """create_room <room_type> <room_name>..."""
-        for name in args['<name>']:
-            print(name)
+        """
+        Usage: create_room <room_type> <room_name>...
+        """
+        try:
+            for r in args['<room_name>']:
+                dojo.create_room(args['<room_type>'], r)
+        except Exception:
+            msg = 'Oops!An error occurred in running'
+            msg += ' the command. Please try again.'
+            click.secho(msg, fg='red', bold=True)
 
-    @docopt_cmd
-    def do_add_person(self, arg):
-        """ add_person <person_name> <FELLOW|STAFF> [wants_accommodation] """
-        print(arg)
+    @parse
+    def do_add_person(self, args):
+        """Usage: add_person <first_name> <other_name> <role> [--accomodate=N] """
+        if args['--accomodate'] is None:
+            args['--accomodate'] = 'N'
+
+        try:
+            validated_details = dojo.validate_person(args['<first_name>'],
+                                                      args['<other_name>'],
+                                                      args['<role>'],
+                                                      args['--accomodate'])
+            if isinstance(validated_details, list):
+                person = dojo.generate_identifier(validated_details)
+                dojo.allocate_room(person)
+        except Exception as e:
+            print(e)
+            msg = 'Oops!An error occurred in running'
+            msg += ' the command. Please try again.'
+            click.secho(msg, fg='red', bold=True)
 
     def do_exit(self, arg):
         """Quits out of Interactive Mode."""
@@ -62,4 +104,4 @@ class DojoInteractive(cmd.Cmd):
         exit()
 if __name__=="__main__":
     print(__doc__)
-    DojoInteractive().cmdloop()
+    Interactive_Dojo().cmdloop()
