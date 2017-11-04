@@ -16,14 +16,14 @@ class TestPersonClassFunctionality(unittest.TestCase):
     Fellow and Staff and handles how they are managed.
     '''
 
-    def test_staff_person_type(self):
+    def test_staff_role(self):
         s = Staff('Felicity', 'Smoke')
-        self.assertEqual(s.person_type, 'Staff')
+        self.assertEqual(s.role, 'Staff')
         # string formatting should occur as highlited above
 
-    def test_fellow_person_type(self):
+    def test_fellow_role(self):
         s = Fellow('Elon', 'Musk')
-        self.assertEqual(s.person_type, 'Fellow')
+        self.assertEqual(s.role, 'Fellow')
 
 
 class TestRoomClassFunctionality(unittest.TestCase):
