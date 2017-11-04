@@ -3,7 +3,11 @@
 This is Dojo!
 Usage:
     create_room (L|O) <room_name>...
+<<<<<<< 058f5058da19486feb7de360e0899791ba41ddb8
     add_person <first_name> <last_name> <role> [<accomodate>]
+=======
+    add_person <first_name> <last_name> <role> [--accomodate=N]
+>>>>>>> [Fix] Syntax error
     (-i | --interactive)
 Options:
     -h --help     Show this screen.
@@ -63,7 +67,11 @@ dojo = Dojo()
 
 class Interactive_Dojo(cmd.Cmd):
 
+<<<<<<< 058f5058da19486feb7de360e0899791ba41ddb8
     prompt = '(Dojo)===> '
+=======
+    prompt = '(dojo)===> '
+>>>>>>> [Fix] Syntax error
 
     @parse
     def do_create_room(self, args):
@@ -80,6 +88,7 @@ class Interactive_Dojo(cmd.Cmd):
 
     @parse
     def do_add_person(self, args):
+<<<<<<< 058f5058da19486feb7de360e0899791ba41ddb8
         """Usage: add_person <first_name> <last_name> <role> [<accomodate>] """
         if args['<accomodate>'] is None:
             args['<accomodate>'] = 'N'
@@ -89,6 +98,17 @@ class Interactive_Dojo(cmd.Cmd):
                                                       args['<last_name>'],
                                                       args['<role>'],
                                                       args['<accomodate>'])
+=======
+        """Usage: add_person <first_name> <other_name> <role> [--accomodate=N] """
+        if args['--accomodate'] is None:
+            args['--accomodate'] = 'N'
+
+        try:
+            validated_details = dojo.validate_person(args['<first_name>'],
+                                                      args['<other_name>'],
+                                                      args['<role>'],
+                                                      args['--accomodate'])
+>>>>>>> [Fix] Syntax error
             if isinstance(validated_details, list):
                 person = dojo.generate_identifier(validated_details)
                 dojo.allocate_room(person)
