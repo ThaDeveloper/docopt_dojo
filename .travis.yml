@@ -7,7 +7,7 @@ install:
 env:
   - DB=sqlite
 script: 
-  - nosetests --with-coverage
+  - nosetests --with-coverage --cover-package=src
   - coveralls
 after_success:
  - coveralls
