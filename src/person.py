@@ -6,10 +6,10 @@ class Person(object):
     as room_name,room_type and capacity
     '''
 
-    def __init__(self, first_name, last_name, person_type):
+    def __init__(self, first_name, last_name, role):
         self.first_name = first_name.strip().title()
         self.last_name = last_name.strip().title()
-        self.person_type = person_type.strip().title()
+        self.role = role.strip().title()
         self.accomodate = 'N'
 
     def get_full_name(self):
@@ -23,9 +23,10 @@ class Person(object):
 class Fellow(Person):
     def __init__(self, first_name, last_name):
         super(Fellow, self).__init__(
-            first_name, last_name, person_type='Fellow')
+            first_name, last_name, role='Fellow')
 
 
 class Staff(Person):
     def __init__(self, first_name, last_name):
         super(Staff, self).__init__(
+            first_name, last_name, role='Staff')
