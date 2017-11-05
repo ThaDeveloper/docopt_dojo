@@ -3,7 +3,7 @@
 This is Dojo!
 Usage:
     create_room (L|O) <room_name>...
-    add_person <first_name> <last_name> <role> [--accomodate=N]
+    add_person <first_name> <last_name> <role> [<accomodate>]
     (-i | --interactive)
 Options:
     -h --help     Show this screen.
@@ -63,7 +63,7 @@ dojo = Dojo()
 
 class Interactive_Dojo(cmd.Cmd):
 
-    prompt = '(dojo)===> '
+    prompt = '(Dojo)===> '
 
     @parse
     def do_create_room(self, args):
@@ -80,15 +80,15 @@ class Interactive_Dojo(cmd.Cmd):
 
     @parse
     def do_add_person(self, args):
-        """Usage: add_person <first_name> <other_name> <role> [--accomodate=N] """
-        if args['--accomodate'] is None:
-            args['--accomodate'] = 'N'
+        """Usage: add_person <first_name> <last_name> <role> [<accomodate>] """
+        if args['<accomodate>'] is None:
+            args['<accomodate>'] = 'N'
 
         try:
             validated_details = dojo.validate_person(args['<first_name>'],
-                                                      args['<other_name>'],
+                                                      args['<last_name>'],
                                                       args['<role>'],
-                                                      args['--accomodate'])
+                                                      args['<accomodate>'])
             if isinstance(validated_details, list):
                 person = dojo.generate_identifier(validated_details)
                 dojo.allocate_room(person)

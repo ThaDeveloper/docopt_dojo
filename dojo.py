@@ -1,5 +1,6 @@
 import os
 import time
+#click - cli package that for our case will be used to printout screen messages
 import click
 from random import randint
 from src.room import LivingSpace, Office
@@ -47,9 +48,9 @@ class Dojo(object):
         list
         '''
         if type(room_type) != str or room_type.upper() not in ['O', 'L']:
-            click.secho('Error.Please enter O or L for a room type.',
+            return click.secho('Error.Please enter O or L for a room type.',
                         bold=True, fg='red')
-            return 'Error. Invalid room type initial.'
+            #return 'Error. Invalid room type initial.'
         room_type = room_type.strip().upper()
         room_name = room_name.strip().title()
         if room_type == 'O':
@@ -59,10 +60,10 @@ class Dojo(object):
         for room in self.rooms:
             if room.room_name == room_name and \
                     room.room_type == room_type:
-                click.secho('%s --> %s ALREADY EXISTS.Please pick another name.'
+                return click.secho('%s --> %s ALREADY EXISTS.Please pick another name.'
                             % (room_type, room_name),
                             fg='red', bold=True)
-                return 'Room already exists.'
+                #return 'Room already exists.'
         if room_type == 'Office':
             room = Office(room_name)
             self.offices['available'].append(room.room_name)
@@ -70,27 +71,27 @@ class Dojo(object):
             room = LivingSpace(room_name)
             self.living_spaces['available'].append(room.room_name)
         self.rooms.append(room)
-        click.secho('The %s ---> %s has been created.' %
+        return click.secho('The %s ---> %s has been created.' %
                     (room.room_type, room.room_name), bold=True, fg='green')
-        return 'Room %s created.' % room.room_name
+        #return 'Room %s created.' % room.room_name
 
-    def validate_person(self, first_name, other_name, role,
+    def validate_person(self, first_name, last_name, role,
                         accomodate='N'):
-        if type(first_name) != str or type(other_name) != str:
-            click.secho('Incorrect name type format.', fg='red')
-            return 'Wrong type for name.'
-        if not first_name.isalpha() or not other_name.isalpha():
-            click.secho('Person names need be alphabetical in nature',
+        if type(first_name) != str or type(last_name) != str:
+           return click.secho('Incorrect name type format.', fg='red')
+            #return 'Wrong type for name.'
+        elif not first_name.isalpha() or not last_name.isalpha():
+           return click.secho('Person names need be alphabetical in nature',
                         fg='red', bold=True)
-            return 'Non-Alphabetical names added'
-        if role.title() not in ['Fellow', 'Staff']:
-            click.secho('Please enter either Fellow or Staff for person type',
+            #return 'Non-Alphabetical names added'
+        elif role.title() not in ['Fellow', 'Staff']:
+            return click.secho('Please enter either Fellow or Staff for role',
                         fg='red', bold=True)
-            return 'Invalid Person Type'
-        if accomodate.upper() not in ['Y', 'N']:
-            click.secho('Please enter Y or N for wants accomodation.',
+            #return 'Invalid role'
+        elif accomodate.upper() not in ['Y', 'N']:
+            return click.secho('Please enter Y or N for wants accomodation?',
                         fg='red', bold=True)
-            return 'Wants accomodation not Y or N'
+            #return 'Wants accomodation not Y or N'
         accomodate = accomodate.upper()
         role = role.title()
         if role == 'Staff' and accomodate == 'Y':
@@ -98,35 +99,35 @@ class Dojo(object):
             click.secho(
                 'A Staff member cannot be allocated accomodation. An office will however be allocated.',
                 fg='red', bold=True)
-        fn = first_name.title() + ' ' + other_name.title()
+        fn = first_name.title() + ' ' + last_name.title()
         for person in self.people:
             if person.full_name == fn and \
                     person.role == role.title():
-                click.secho('%s %s ALREADY EXISTS.' % (role, fn))
-                return 'Person exists.'
+                return click.secho('%s %s ALREADY EXISTS.' % (role, fn),fg='red', bold=True)
+                #return 'Person exists.'
         if not self.offices['available'] and role == 'Staff':
-            click.secho(
+            return click.secho(
                 'There are no offices or the offices are all full.',
                 fg='red', bold=True)
-            return 'There are no offices in the system.'
-        if not self.living_spaces['available'] and not \
+            #return 'There are no offices in the system.'
+        elif not self.living_spaces['available'] and not \
                 self.offices['available']:
-            click.secho(
+            return click.secho(
                 'THERE ARE NO ROOMS IN THE SYSTEM YET OR ALL ROOMS ARE FULL.',
                 fg='red', bold=True)
-            return 'There are no rooms in the system.'
+            #return 'There are no rooms in the system.'
 
-        if accomodate == 'Y' and role == 'Fellow':
+        elif accomodate == 'Y' and role == 'Fellow':
             if not self.living_spaces['available']:
                 msg = 'Please add a living space for a fellow '
                 msg += 'to be allocated both room types.'
-                click.secho(msg, fg='red', bold=True)
-                return 'No Living space for fellow requiring both.'
+                return click.secho(msg, fg='red', bold=True)
+                #return 'No Living space for fellow requiring both.'
             elif not self.offices['available']:
                 msg = 'Please add an office for a fellow '
                 msg += 'to be allocated both room types.'
-                click.secho(msg, fg='red', bold=True)
-                return 'No office for fellow requiring both.'
+                return click.secho(msg, fg='red', bold=True)
+               # return 'No office for fellow requiring both.'
         return [fn, accomodate, role]
 
     def generate_identifier(self, validated_details):
@@ -183,6 +184,7 @@ class Dojo(object):
         # only a fellow can be allocated a living space
         # a staff can only be allocated an office.
         click.secho('ALLOCATING ROOM ...', fg='cyan')
+        #suspends execution for the given number of seconds for this cas system sleeps for 1 sec.
         time.sleep(1)
         if person.role == 'Staff':
             staff_single_allocation = {}
@@ -192,7 +194,7 @@ class Dojo(object):
             for room in self.rooms:
                 if room.room_name == staff_single_allocation[person.full_name]:
                     if room.capacity > 0:
-                        click.secho('Success!', fg='green')
+                        click.secho('Success:Staff allocated an office', fg='green')
                         room.capacity = room.add_person(person.full_name)
                     else:
                         self.offices['available'].remove(room.room_name)
@@ -234,8 +236,8 @@ class Dojo(object):
                             msg = '%s has reached its Maximum capacity.' % room.room_name
                             msg += 'Please add another %s.' % room.room_type
                             click.secho(msg, fg='red', bold=True)
-                click.secho('Success!', fg='green')
-                return 'Fellow allocated both living space and office'
+                return click.secho('Success:Fellow allocated both living space and office', fg='green')
+                #return 'Fellow allocated both living space and office'
             else:
                 fellow_single_allocation = {}
                 fellow_single_allocation[person.full_name] = \
@@ -246,7 +248,7 @@ class Dojo(object):
                     if room.room_name == \
                             fellow_single_allocation[person.full_name]:
                         if room.capacity > 0:
-                            click.secho('Success!', fg='green')
+                            click.secho('Success:Fellow has been allocated and Office', fg='green')
                             room.capacity = room.add_person(person.full_name)
                         else:
                             self.offices['available'].remove(room.room_name)
