@@ -275,3 +275,89 @@ class Dojo(object):
             else:
                 msg = click.secho('Person does not exist.', fg='red')
                 return msg
+    
+    def print_allocations(self, filename=None):
+        """
+        This prints allocations to the screen and
+        highlights if they are empty or have any
+        occupants, thereafter printing everyone who
+        is in the particular room.
+        """
+        if not self.rooms:
+            return click.secho('THERE ARE NO ROOMS IN THE SYSTEM.',
+                        fg='red', bold=True)
+        msg = ''
+        for room in self.rooms:
+            msg += '==' * 10
+            msg += '\n'
+            msg += room.room_name + '(' + room.room_type + ')'
+            msg += '\n'
+            msg += '==' * 10
+            msg += '\n'
+            if room.occupants:
+                for occupant in room.occupants:
+                    msg += occupant
+                    msg += '\n'
+            else:
+                msg += 'There are no people in %s yet.' % room.room_name
+                msg += '\n'
+        if filename is None:
+            return click.secho(msg, fg='cyan')
+            #return 'Print to screen'
+
+        else:
+            file = open(filename + '.txt', 'w')
+            file.write(msg)
+            return click.secho('Printed to %s.txt' % filename, fg='green')
+        
+    def print_room(self, room_name):
+        '''
+        This function gets a room name as an argument and proceeds
+        to display the results on the occupants of the room if any.
+        '''
+        if not self.rooms:
+            return click.secho('THERE ARE NO ROOMS IN THE SYSTEM YET.',
+                        fg='red', bold=True)
+        all_rooms = []
+        for room in self.rooms:
+            all_rooms.append(room.room_name)
+        if room_name.title() not in all_rooms:
+            return click.secho('The room %s does not exist on our system.' %
+                        room_name, fg='red', bold=True)
+        room_name = room_name.title()
+        for room in self.rooms:
+            if room.room_name == room_name:
+                click.secho('ROOM NAME:%s(%s)' %
+                            (room_name, room.room_type),
+                            fg='yellow', bold=True)
+                click.secho('=' * 20, fg='cyan')
+                if room.occupants:
+                    for occupant in room.occupants:
+                        click.secho(occupant, fg='yellow')
+                else:
+                    click.secho('Its lonely here.', fg='cyan', bold=True)
+                    return False
+
+    def print_unallocated(self, filename=None):
+        '''
+        After Max capacity has been recorded in a particular
+        room, the person is thereafter appended to a the unallocated
+        persons list.
+        '''
+        if not self.unallocated_persons:
+            return click.secho('There are no unallocated people as of now.',
+                        fg='green', bold=True)
+        else:
+            if filename is None:
+                click.secho('UNALLOCATED PEOPLE IN MY AMITY.',
+                            fg='red', bold=True)
+                for unallocated in self.unallocated_persons:
+                    return click.secho(unallocated, fg='yellow')
+            else:
+                file = open(filename + '.txt', 'w')
+                file.write("UNALLOCATED PEOPLE IN MY AMITY.")
+                file.write('\n')
+                for unallocated in self.unallocated_persons:
+                    file.write(unallocated)
+                    file.write('\n')
+                click.secho('Print out made to %s.txt' % filename, fg='green')
