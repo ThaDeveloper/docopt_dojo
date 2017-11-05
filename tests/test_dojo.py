@@ -131,14 +131,14 @@ class TestDojoFunctionality(unittest.TestCase):
         person = self.dojo.generate_identifier(res)
         for person in self.dojo.people:
             if person.full_name == 'Talib Kweli':
-                self.assertEqual(person.role, 'Fellow')
+                self.assertEqual(person.person_type, 'Fellow')
                 self.assertEqual(person.identifier, 'F1')
 
         res2 = self.dojo.validate_person('giannis', 'antekokuompo', 'Staff', 'n')
         person = self.dojo.generate_identifier(res2)
         for person in self.dojo.people:
             if person.full_name == 'Giannis Aantekokuompo':
-                self.assertEqual(person.role, 'Staff')
+                self.assertEqual(person.person_type, 'Staff')
                 self.assertEqual(person.identifier, 'S1')
 
     def test_get_identifier_if_no_people_added(self):

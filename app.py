@@ -4,6 +4,9 @@ This is Dojo!
 Usage:
     create_room (L|O) <room_name>...
     add_person <first_name> <last_name> <role> [<accomodate>]
+    print_room <room_name>
+    print_allocations [--o=filename]
+    print_unallocated [--o=filename]
     (-i | --interactive)
 Options:
     -h --help     Show this screen.
@@ -97,6 +100,29 @@ class Interactive_Dojo(cmd.Cmd):
             msg = 'Oops!An error occurred in running'
             msg += ' the command. Please try again.'
             click.secho(msg, fg='red', bold=True)
+    
+    @parse
+    def do_print_room(self, args):
+        """Usage: print_room <room_name>"""
+        dojo.print_room(args['<room_name>'])
+
+    @parse
+    def do_print_allocations(self, args):
+        """Usage: print_allocations [--o=filename]"""
+        filename = args['--o']
+        if filename:
+            dojo.print_allocations(filename)
+        else:
+            dojo.print_allocations()
+
+    @parse
+    def do_print_unallocated(self, args):
+        """Usage: print_unallocated [--o=filename]"""
+        filename = args['--o']
+        if filename:
+            dojo.print_unallocated(filename)
+        else:
+            dojo.print_unallocated()
 
     def do_exit(self, arg):
         """Quits out of Interactive Mode."""
