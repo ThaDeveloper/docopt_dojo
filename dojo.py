@@ -48,9 +48,9 @@ class Dojo(object):
         list
         '''
         if type(room_type) != str or room_type.upper() not in ['O', 'L']:
-            return click.secho('Error.Please enter O or L for a room type.',
+            click.secho('Error.Please enter O or L for a room type.',
                         bold=True, fg='red')
-            #return 'Error. Invalid room type initial.'
+            return 'Error. Invalid room type initial.'
         room_type = room_type.strip().upper()
         room_name = room_name.strip().title()
         if room_type == 'O':
@@ -60,10 +60,10 @@ class Dojo(object):
         for room in self.rooms:
             if room.room_name == room_name and \
                     room.room_type == room_type:
-                return click.secho('%s --> %s ALREADY EXISTS.Please pick another name.'
+                click.secho('%s --> %s ALREADY EXISTS.Please pick another name.'
                             % (room_type, room_name),
                             fg='red', bold=True)
-                #return 'Room already exists.'
+                return 'Room already exists.'
         if room_type == 'Office':
             room = Office(room_name)
             self.offices['available'].append(room.room_name)
@@ -71,27 +71,27 @@ class Dojo(object):
             room = LivingSpace(room_name)
             self.living_spaces['available'].append(room.room_name)
         self.rooms.append(room)
-        return click.secho('The %s ---> %s has been created.' %
+        click.secho('The %s ---> %s has been created.' %
                     (room.room_type, room.room_name), bold=True, fg='green')
-        #return 'Room %s created.' % room.room_name
+        return 'Room %s created.' % room.room_name
 
     def validate_person(self, first_name, last_name, role,
                         accomodate='N'):
         if type(first_name) != str or type(last_name) != str:
-           return click.secho('Incorrect name type format.', fg='red')
-            #return 'Wrong type for name.'
+            click.secho('Incorrect name type format.', fg='red')
+            return 'Wrong type for name.'
         elif not first_name.isalpha() or not last_name.isalpha():
-           return click.secho('Person names need be alphabetical in nature',
+            click.secho('Person names need be alphabetical in nature',
                         fg='red', bold=True)
-            #return 'Non-Alphabetical names added'
+            return 'Non-Alphabetical names added'
         elif role.title() not in ['Fellow', 'Staff']:
-            return click.secho('Please enter either Fellow or Staff for role',
+            click.secho('Please enter either Fellow or Staff for role',
                         fg='red', bold=True)
-            #return 'Invalid role'
+            return 'Invalid role'
         elif accomodate.upper() not in ['Y', 'N']:
-            return click.secho('Please enter Y or N for wants accomodation?',
+            click.secho('Please enter Y or N for wants accomodation?',
                         fg='red', bold=True)
-            #return 'Wants accomodation not Y or N'
+            return 'Wants accomodation not Y or N'
         accomodate = accomodate.upper()
         role = role.title()
         if role == 'Staff' and accomodate == 'Y':
@@ -103,31 +103,31 @@ class Dojo(object):
         for person in self.people:
             if person.full_name == fn and \
                     person.role == role.title():
-                return click.secho('%s %s ALREADY EXISTS.' % (role, fn),fg='red', bold=True)
-                #return 'Person exists.'
+                click.secho('%s %s ALREADY EXISTS.' % (role, fn),fg='red', bold=True)
+                return 'Person exists.'
         if not self.offices['available'] and role == 'Staff':
-            return click.secho(
+            click.secho(
                 'There are no offices or the offices are all full.',
                 fg='red', bold=True)
-            #return 'There are no offices in the system.'
+            return 'There are no offices in the system.'
         elif not self.living_spaces['available'] and not \
                 self.offices['available']:
-            return click.secho(
+            click.secho(
                 'THERE ARE NO ROOMS IN THE SYSTEM YET OR ALL ROOMS ARE FULL.',
                 fg='red', bold=True)
-            #return 'There are no rooms in the system.'
+            return 'There are no rooms in the system.'
 
         elif accomodate == 'Y' and role == 'Fellow':
             if not self.living_spaces['available']:
                 msg = 'Please add a living space for a fellow '
                 msg += 'to be allocated both room types.'
-                return click.secho(msg, fg='red', bold=True)
-                #return 'No Living space for fellow requiring both.'
+                click.secho(msg, fg='red', bold=True)
+                return 'No Living space for fellow requiring both.'
             elif not self.offices['available']:
                 msg = 'Please add an office for a fellow '
                 msg += 'to be allocated both room types.'
-                return click.secho(msg, fg='red', bold=True)
-               # return 'No office for fellow requiring both.'
+                click.secho(msg, fg='red', bold=True)
+                return 'No office for fellow requiring both.'
         return [fn, accomodate, role]
 
     def generate_identifier(self, validated_details):
@@ -284,8 +284,9 @@ class Dojo(object):
         is in the particular room.
         """
         if not self.rooms:
-            return click.secho('THERE ARE NO ROOMS IN THE SYSTEM.',
+            click.secho('THERE ARE NO ROOMS IN THE SYSTEM.',
                         fg='red', bold=True)
+            return 'Error. No rooms within system.'
         msg = ''
         for room in self.rooms:
             msg += '==' * 10
@@ -302,13 +303,14 @@ class Dojo(object):
                 msg += 'There are no people in %s yet.' % room.room_name
                 msg += '\n'
         if filename is None:
-            return click.secho(msg, fg='cyan')
-            #return 'Print to screen'
+            click.secho(msg, fg='cyan')
+            return 'Print to screen'
 
         else:
             file = open(filename + '.txt', 'w')
             file.write(msg)
-            return click.secho('Printed to %s.txt' % filename, fg='green')
+            click.secho('Printed to %s.txt' % filename, fg='green')
+            return 'Print to file'
         
     def print_room(self, room_name):
         '''
@@ -316,14 +318,16 @@ class Dojo(object):
         to display the results on the occupants of the room if any.
         '''
         if not self.rooms:
-            return click.secho('THERE ARE NO ROOMS IN THE SYSTEM YET.',
+            click.secho('THERE ARE NO ROOMS IN THE SYSTEM YET.',
                         fg='red', bold=True)
+            return 'No rooms exist at the moment.'
         all_rooms = []
         for room in self.rooms:
             all_rooms.append(room.room_name)
         if room_name.title() not in all_rooms:
-            return click.secho('The room %s does not exist on our system.' %
+            click.secho('The room %s does not exist on our system.' %
                         room_name, fg='red', bold=True)
+            return 'Room does not exist.'
         room_name = room_name.title()
         for room in self.rooms:
             if room.room_name == room_name:
@@ -345,14 +349,16 @@ class Dojo(object):
         persons list.
         '''
         if not self.unallocated_persons:
-            return click.secho('There are no unallocated people as of now.',
+            click.secho('There are no unallocated people as of now.',
                         fg='green', bold=True)
+            return 'No unallocated people as per now.'
         else:
             if filename is None:
                 click.secho('UNALLOCATED PEOPLE IN MY AMITY.',
                             fg='red', bold=True)
                 for unallocated in self.unallocated_persons:
-                    return click.secho(unallocated, fg='yellow')
+                    click.secho(unallocated, fg='yellow')
+                    return 'Some people unallocated.'
             else:
                 file = open(filename + '.txt', 'w')
                 file.write("UNALLOCATED PEOPLE IN MY AMITY.")
