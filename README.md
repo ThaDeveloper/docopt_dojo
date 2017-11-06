@@ -43,4 +43,4 @@ An office called Black has been successfully created!
 An office called Brown has been successfully created!
 ```
 
-
+![alt text](https://github.com/ThaDeveloper/docopt_dojo/blob/master/assets/test_sample.png "Test sample output")
