@@ -27,17 +27,20 @@ __*Sample Commands and Output*__
 
 > *Sample input with one office*
 
-`((Dojo)==> create_room office Orange`
+`(Dojo)==> create_room office Orange`
 > *Sample output with one office*
 
 `An office called Orange has been successfully created!`
 
 > *Sample input with multiple offices*
 
-`((Dojo))==> create_room office Blue Black Brown`
+`(Dojo)==> create_room office Blue Black Brown`
 
 > *Sample output with multiple offices*
-
-```An office called Blue has been successfully created!
+```
+An office called Blue has been successfully created!
 An office called Black has been successfully created!
-An office called Brown has been successfully created!```
+An office called Brown has been successfully created!
+```
+
+
