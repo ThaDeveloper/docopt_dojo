@@ -60,7 +60,7 @@ class Dojo(object):
         for room in self.rooms:
             if room.room_name == room_name and \
                     room.room_type == room_type:
-                click.secho('%s --> %s ALREADY EXISTS.Please pick another name.'
+                click.secho('%s %s ALREADY EXISTS.Please pick another name.'
                             % (room_type, room_name),
                             fg='red', bold=True)
                 return 'Room already exists.'
@@ -71,7 +71,7 @@ class Dojo(object):
             room = LivingSpace(room_name)
             self.living_spaces['available'].append(room.room_name)
         self.rooms.append(room)
-        click.secho('The %s ---> %s has been created.' %
+        click.secho('The %s %s has been created.' %
                     (room.room_type, room.room_name), bold=True, fg='green')
         return 'Room %s created.' % room.room_name
 
@@ -174,7 +174,7 @@ class Dojo(object):
                 person.assign_identifier(identifier)
                 self.fellows.append(person.full_name)
         self.people.append(person)
-        click.secho('The %s %s has been created.\n' %
+        click.secho('The %s %s has been added.\n' %
                     (person.role, person.full_name),
                     fg='green', bold=True)
         return person
@@ -183,7 +183,7 @@ class Dojo(object):
         # random allocation
         # only a fellow can be allocated a living space
         # a staff can only be allocated an office.
-        click.secho('ALLOCATING ROOM ...', fg='cyan')
+        #click.secho('ALLOCATING ROOM ...', fg='cyan')
         #suspends execution for the given number of seconds for this cas system sleeps for 1 sec.
         time.sleep(1)
         if person.role == 'Staff':
@@ -194,7 +194,7 @@ class Dojo(object):
             for room in self.rooms:
                 if room.room_name == staff_single_allocation[person.full_name]:
                     if room.capacity > 0:
-                        click.secho('Success:Staff allocated an office', fg='green')
+                        click.secho('Staff %s has been allocated office %s'%(person.full_name,staff_single_allocation[person.full_name]), fg='green')
                         room.capacity = room.add_person(person.full_name)
                     else:
                         self.offices['available'].remove(room.room_name)
@@ -236,7 +236,8 @@ class Dojo(object):
                             msg = '%s has reached its Maximum capacity.' % room.room_name
                             msg += 'Please add another %s.' % room.room_type
                             click.secho(msg, fg='red', bold=True)
-                return click.secho('Success:Fellow allocated both living space and office', fg='green')
+                return click.secho('Fellow %s has been allocated office %s and living space %s'\
+                                    %(person.full_name,fellow_single_allocation['office'],fellow_single_allocation['living_space']), fg='green')
                 #return 'Fellow allocated both living space and office'
             else:
                 fellow_single_allocation = {}
@@ -248,7 +249,7 @@ class Dojo(object):
                     if room.room_name == \
                             fellow_single_allocation[person.full_name]:
                         if room.capacity > 0:
-                            click.secho('Success:Fellow has been allocated and Office', fg='green')
+                            click.secho('Fellow %s has been allocated Office %s'%(person.full_name,fellow_single_allocation['office']), fg='green')
                             room.capacity = room.add_person(person.full_name)
                         else:
                             self.offices['available'].remove(room.room_name)

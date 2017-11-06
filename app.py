@@ -66,7 +66,7 @@ dojo = Dojo()
 
 class Interactive_Dojo(cmd.Cmd):
 
-    prompt = '(Dojo)===> '
+    prompt = '(Dojo)==> '
 
     @parse
     def do_create_room(self, args):
