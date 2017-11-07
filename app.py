@@ -16,12 +16,7 @@ import os
 import click
 import cmd
 from docopt import docopt, DocoptExit
-#from ui import enter_dojo, exit_bar
 from dojo import Dojo
-
-
-dojo = Dojo()
-
 
 def parse(func):
     """
@@ -35,15 +30,16 @@ def parse(func):
             opt = docopt(fn.__doc__, arg)
 
         except DocoptExit as e:
-            # Throws an Invalid Command message when arguments
-            # do not match what is outlined in the __doc__ string.
+            # The DocoptExit is thrown when the args do not match.
+            # We print a message to the user and the usage block.
             msg = 'Invalid Command'
             print(msg)
             print(e)
             return
 
         except SystemExit:
-            # Show help
+            # The SystemExit exception prints the usage for --help
+            # We do not need to do the print here.
             return
 
         return func(self, opt)
@@ -67,7 +63,7 @@ dojo = Dojo()
 class Interactive_Dojo(cmd.Cmd):
 
     prompt = '(Dojo)==> '
-
+    #decorators to conver functions to commands
     @parse
     def do_create_room(self, args):
         """
@@ -126,7 +122,7 @@ class Interactive_Dojo(cmd.Cmd):
 
     def do_exit(self, arg):
         """Quits out of Interactive Mode."""
-        print('Good Bye!')
+        click.secho("Thank you for stopping by, Goodbye!", fg='yellow', bold=True)
         exit()
 if __name__=="__main__":
     print(__doc__)
