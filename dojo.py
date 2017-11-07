@@ -191,7 +191,6 @@ class Dojo(object):
             for room in self.rooms:
                 if room.room_name == staff_single_allocation[person.full_name]:
                     if room.capacity > 0:
-                        click.secho('Staff %s has been allocated office %s'%(person.full_name,staff_single_allocation[person.full_name]), fg='green')
                         room.capacity = room.add_person(person.full_name)
                     else:
                         self.offices['available'].remove(room.room_name)
@@ -200,6 +199,8 @@ class Dojo(object):
                         msg = '%s has reached its Maximum capacity.' % room.room_name
                         msg += 'Please add another %s.' % room.room_type
                         click.secho(msg, fg='red', bold=True)
+            return click.secho('Staff %s has been allocated office %s'\
+                        %(person.full_name,staff_single_allocation[person.full_name]), fg='green')
 
         if person.role == 'Fellow':
             if person.accomodate == 'Y':
@@ -235,7 +236,8 @@ class Dojo(object):
                             msg += 'Please add another %s.' % room.room_type
                             click.secho(msg, fg='red', bold=True)
                 return click.secho('Fellow %s has been allocated office %s and living space %s'\
-                                    %(person.full_name,fellow_single_allocation['office'],fellow_single_allocation['living_space']), fg='green')
+                                    %(person.full_name,fellow_single_allocation['office'],
+                                    fellow_single_allocation['living_space']), fg='green')
                 #return 'Fellow allocated both living space and office'
             else:
                 fellow_single_allocation = {}
@@ -254,7 +256,8 @@ class Dojo(object):
                             msg = '%s has reached its Maximum capacity.' % room.room_name
                             msg += 'Please add another %s.' % room.room_type
                             click.secho(msg, fg='red', bold=True)
-                return click.secho('Fellow %s has been allocated Office %s'%(person.full_name,fellow_single_allocation['office']), fg='green')
+                return click.secho('Fellow %s has been allocated Office %s'\
+                                   %(person.full_name,fellow_single_allocation['office']), fg='green')
 
     def get_identifier(self, first_name, last_name):
         """

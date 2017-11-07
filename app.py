@@ -61,7 +61,8 @@ dojo = Dojo()
 
 
 class Interactive_Dojo(cmd.Cmd):
-
+    intro = 'Welcome to Dojo Interactive Program!' \
+        + ' (type help for a list of commands.)'
     prompt = '(Dojo)==> '
     #decorators to conver functions to commands
     @parse
