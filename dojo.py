@@ -174,7 +174,7 @@ class Dojo(object):
                 person.assign_identifier(identifier)
                 self.fellows.append(person.full_name)
         self.people.append(person)
-        click.secho('The %s %s has been added.\n' %
+        click.secho('The %s %s has been added.' %
                     (person.role, person.full_name),
                     fg='green', bold=True)
         return person
@@ -183,9 +183,6 @@ class Dojo(object):
         # random allocation
         # only a fellow can be allocated a living space
         # a staff can only be allocated an office.
-        #click.secho('ALLOCATING ROOM ...', fg='cyan')
-        #suspends execution for the given number of seconds for this cas system sleeps for 1 sec.
-        time.sleep(1)
         if person.role == 'Staff':
             staff_single_allocation = {}
             staff_single_allocation[person.full_name] = self.offices['available'][
@@ -206,7 +203,8 @@ class Dojo(object):
 
         if person.role == 'Fellow':
             if person.accomodate == 'Y':
-                fellow_single_allocation = {}
+                fellow_single_allocation = {}#the dict will include person name
+                #office allocated and living space allocated
                 fellow_single_allocation['name'] = person.full_name
                 fellow_single_allocation['office'] = self.offices['available'][
                     randint(0, (len(self.offices['available']) - 1))]
@@ -241,16 +239,14 @@ class Dojo(object):
                 #return 'Fellow allocated both living space and office'
             else:
                 fellow_single_allocation = {}
-                fellow_single_allocation[person.full_name] = \
-                    self.offices['available'][
+                fellow_single_allocation['name'] = person.full_name
+                fellow_single_allocation['office'] = self.offices['available'][
                     randint(0, (len(self.offices['available']) - 1))]
                 self.fellow_allocations.append(fellow_single_allocation)
                 for room in self.rooms:
-                    if room.room_name == \
-                            fellow_single_allocation[person.full_name]:
+                    if room.room_name == fellow_single_allocation['office']:
                         if room.capacity > 0:
-                            click.secho('Fellow %s has been allocated Office %s'%(person.full_name,fellow_single_allocation['office']), fg='green')
-                            room.capacity = room.add_person(person.full_name)
+                           room.capacity = room.add_person(person.full_name)
                         else:
                             self.offices['available'].remove(room.room_name)
                             self.offices['unavailable'].append(room.room_name)
@@ -258,6 +254,7 @@ class Dojo(object):
                             msg = '%s has reached its Maximum capacity.' % room.room_name
                             msg += 'Please add another %s.' % room.room_type
                             click.secho(msg, fg='red', bold=True)
+                return click.secho('Fellow %s has been allocated Office %s'%(person.full_name,fellow_single_allocation['office']), fg='green')
 
     def get_identifier(self, first_name, last_name):
         """
@@ -355,14 +352,14 @@ class Dojo(object):
             return 'No unallocated people as per now.'
         else:
             if filename is None:
-                click.secho('UNALLOCATED PEOPLE IN MY AMITY.',
+                click.secho('UNALLOCATED PEOPLE IN MY DOJO',
                             fg='red', bold=True)
                 for unallocated in self.unallocated_persons:
                     click.secho(unallocated, fg='yellow')
                     return 'Some people unallocated.'
             else:
                 file = open(filename + '.txt', 'w')
-                file.write("UNALLOCATED PEOPLE IN MY AMITY.")
+                file.write("UNALLOCATED PEOPLE IN MY DOJO")
                 file.write('\n')
                 for unallocated in self.unallocated_persons:
                     file.write(unallocated)
