@@ -202,7 +202,7 @@ class Dojo(object):
             return click.secho('Staff %s has been allocated office %s'\
                         %(person.full_name,staff_single_allocation[person.full_name]), fg='green')
 
-        if person.role == 'Fellow':
+        elif person.role == 'Fellow':
             if person.accomodate == 'Y':
                 fellow_single_allocation = {}#the dict will include person name
                 #office allocated and living space allocated
@@ -235,6 +235,8 @@ class Dojo(object):
                             msg = '%s has reached its Maximum capacity.' % room.room_name
                             msg += 'Please add another %s.' % room.room_type
                             click.secho(msg, fg='red', bold=True)
+                            return click.secho('Fellow %s has been allocated Office %s'\
+                                   %(person.full_name,fellow_single_allocation['office']), fg='green')
                 return click.secho('Fellow %s has been allocated office %s and living space %s'\
                                     %(person.full_name,fellow_single_allocation['office'],
                                     fellow_single_allocation['living_space']), fg='green')
@@ -256,6 +258,8 @@ class Dojo(object):
                             msg = '%s has reached its Maximum capacity.' % room.room_name
                             msg += 'Please add another %s.' % room.room_type
                             click.secho(msg, fg='red', bold=True)
+                            return click.secho('Fellow %s has been allocated living space %s'\
+                                   %(person.full_name,fellow_single_allocation['living_space']), fg='green')
                 return click.secho('Fellow %s has been allocated Office %s'\
                                    %(person.full_name,fellow_single_allocation['office']), fg='green')
 
