@@ -30,8 +30,7 @@ class TestRoomClassFunctionality(unittest.TestCase):
     """docstring for TestRoomClassFunctionality
     This Class Checks to make sure the objects created are indeed
     instances of the classes that they are instantiated from.
-    It also mocks some of the methods and ensures they return
-    values as expected.
+    It also  ensures they return values as expected.
         """
 
     def test_office_is_instance_of_class_Office(self):
@@ -59,20 +58,20 @@ class TestRoomClassFunctionality(unittest.TestCase):
         self.assertEqual(office.capacity, 6)
         self.assertEqual(ls.capacity, 4)
 
-    def test_capacity_reduces_by_one_for_living_space(self):
+    def test_living_capacity_reduces_when_person_added(self):
         '''
-        The mock method here abstracts the room occupants indeed do
+        The method abstracts the room occupants indeed do
         decrease by one when the add person function is called.
         '''
         ls = LivingSpace('envy')
         self.assertEqual(ls.add_person('one'), 3)
 
-    def test_capacity_reduces_by_one_for_office(self):
+    def test_office_capacity_reduces_when_person_added(self):
         '''
-        The mock method here abstracts the room occupants indeed do
+        The method here abstracts the room occupants indeed do
         decrease by one when the add person function is called.
         '''
-        of = Office('Bruce')
+        of = Office('starroom')
         self.assertEqual(of.add_person('one'), 5)
 
 if __name__ == '__main__':
