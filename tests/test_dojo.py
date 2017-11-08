@@ -11,7 +11,7 @@ from dojo import Dojo
 
 class TestDojoFunctionality(unittest.TestCase):
     '''
-    The self.dojo Class here is used to hold the mian functionality
+    The self.dojo Class here is used to hold the main functionality
     of the self.dojo Room Allocation system. It imports and makes calls
     to all other classes and manages them to create necessary instances
     and performs the necessary logic. This Test Class thus tests
@@ -288,3 +288,6 @@ class TestDojoFunctionality(unittest.TestCase):
         self.dojo.save_state()
         res = self.dojo.load_state('default_dojo_db')
         self.assertEqual(res, 'Database Loaded.') '''
+    
+if __name__ == '__main__':
+    unittest.main()
