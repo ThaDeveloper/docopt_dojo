@@ -134,7 +134,7 @@ class TestDojoFunctionality(unittest.TestCase):
                 self.assertEqual(person.role, 'Fellow')
                 self.assertEqual(person.identifier, 'F1')
 
-        res2 = self.dojo.validate_person('giannis', 'antekokuompo', 'Staff', 'n')
+        res2 = self.dojo.validate_person('giannis', 'antetokounmpo', 'Staff', 'n')
         person = self.dojo.generate_identifier(res2)
         for person in self.dojo.people:
             if person.full_name == 'Giannis Aantekokuompo':
@@ -154,7 +154,7 @@ class TestDojoFunctionality(unittest.TestCase):
             'mr', 'miyagi'), 'F1')
     # Test Reallocate Person starts here
 
-    ''' def test_reallocate_person(self):
+    def test_reallocate_person(self):
         self.dojo.create_room('o', 'bmw')
         self.dojo.create_room('o', 'subaru')
         res = self.dojo.validate_person('dodge', 'challenger', 'staff', 'n')
@@ -223,7 +223,7 @@ class TestDojoFunctionality(unittest.TestCase):
         person = self.dojo.generate_identifier(res)
         self.dojo.allocate_room(person)
         res = self.dojo.reallocate_unallocated('s222', 'Lab')
-        self.assertEqual(res, 'Person ID does not exist.') '''
+        self.assertEqual(res, 'Person ID does not exist.')
     # test_print_room_works
 
     def test_print_room_if_no_rooms(self):
