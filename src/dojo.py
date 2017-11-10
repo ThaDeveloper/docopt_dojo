@@ -52,7 +52,7 @@ class Dojo(object):
                         bold=True, fg='red')
             return 'Error. Invalid room type initial.'
         room_type = room_type.strip().upper()
-        room_name = room_name.strip().title()
+        room_name = room_name.strip().capitalize()
         if room_type == 'O':
             room_type = 'Office'
         if room_type == 'L':
@@ -77,14 +77,10 @@ class Dojo(object):
 
     def validate_person(self, first_name, last_name, role,
                         accomodate='N'):
-        if type(first_name) != str or type(last_name) != str:
+        if not isinstance(first_name, str) or not isinstance(last_name, str):
             click.secho('Incorrect name type format.', fg='red')
             return 'Wrong type for name.'
-        elif not first_name.isalpha() or not last_name.isalpha():
-            click.secho('Person names need be alphabetical in nature',
-                        fg='red', bold=True)
-            return 'Non-Alphabetical names added'
-        elif role.title() not in ['Fellow', 'Staff']:
+        elif role.capitalize() not in ['Fellow', 'Staff']:
             click.secho('Please enter either Fellow or Staff for role',
                         fg='red', bold=True)
             return 'Invalid role'
@@ -93,16 +89,16 @@ class Dojo(object):
                         fg='red', bold=True)
             return 'Wants accomodation not Y or N'
         accomodate = accomodate.upper()
-        role = role.title()
+        role = role.capitalize()
         if role == 'Staff' and accomodate == 'Y':
             accomodate = 'N'
             click.secho(
                 'A Staff member cannot be allocated accomodation. An office will however be allocated.',
                 fg='red', bold=True)
-        fn = first_name.title() + ' ' + last_name.title()
+        fn = first_name.capitalize() + ' ' + last_name.capitalize()
         for person in self.people:
             if person.full_name == fn and \
-                    person.role == role.title():
+                    person.role == role.capitalize():
                 click.secho('%s %s ALREADY EXISTS.' % (role, fn),fg='red', bold=True)
                 return 'Person exists.'
         if not self.offices['available'] and role == 'Staff':
@@ -136,7 +132,7 @@ class Dojo(object):
         role = validated_details[2]
         full_names = fn.split()
         if not self.people:
-            if role.title() == 'Fellow':
+            if role.capitalize() == 'Fellow':
                 f_id = 1
                 self.f_ids.append(f_id)
                 identifier = 'F' + str(f_id)
@@ -145,7 +141,7 @@ class Dojo(object):
                 person.get_full_name()
                 person.assign_identifier(identifier)
                 self.fellows.append(person.full_name)
-            elif role.title() == 'Staff':
+            elif role.capitalize() == 'Staff':
                 s_id = 1
                 self.s_ids.append(s_id)
                 identifier = 'S' + str(s_id)
@@ -155,7 +151,7 @@ class Dojo(object):
                 person.assign_identifier(identifier)
                 self.staff.append(person.full_name)
         else:
-            if role.title() == 'Fellow':
+            if role.capitalize() == 'Fellow':
                 person = Fellow(full_names[0], full_names[1])
                 person.accomodate = accomodate
                 person.get_full_name()
@@ -164,7 +160,7 @@ class Dojo(object):
                 self.f_ids.append(f_id)
                 person.assign_identifier(identifier)
                 self.fellows.append(person.full_name)
-            elif role.title() == 'Staff':
+            elif role.capitalize() == 'Staff':
                 person = Staff(full_names[0], full_names[1])
                 person.accomodate = accomodate
                 person.get_full_name()
@@ -263,24 +259,6 @@ class Dojo(object):
                 return click.secho('Fellow %s has been allocated Office %s'\
                                    %(person.full_name,fellow_single_allocation['office']), fg='green')
 
-    def get_identifier(self, first_name, last_name):
-        """
-        The get identfier method intends to get a person's
-        id to be able to reallocate them appropriately.
-        """
-        if not self.people:
-            click.secho('There are Currently no people in the system.')
-            return 'No people added'
-        else:
-            fn = first_name.title() + ' ' + last_name.title()
-            for person in self.people:
-                if person.full_name == fn:
-                    msg = click.secho(person.identifier, fg='green')
-                    return person.identifier
-            else:
-                msg = click.secho('Person does not exist.', fg='red')
-                return msg
-    
     def print_allocations(self, filename=None):
         """
         This prints allocations to the screen and
@@ -329,11 +307,11 @@ class Dojo(object):
         all_rooms = []
         for room in self.rooms:
             all_rooms.append(room.room_name)
-        if room_name.title() not in all_rooms:
+        if room_name.capitalize() not in all_rooms:
             click.secho('The room %s does not exist on our system.' %
                         room_name, fg='red', bold=True)
             return 'Room does not exist.'
-        room_name = room_name.title()
+        room_name = room_name.capitalize()
         for room in self.rooms:
             if room.room_name == room_name:
                 click.secho('ROOM NAME:%s(%s)' %
@@ -389,13 +367,13 @@ class Dojo(object):
         for room in self.living_spaces['available']:
             available_rooms.append(room)
         person_id = person_id.upper()
-        room_name = room_name.title()
+        room_name = room_name.capitalize()
         for person in self.people:
             if person.full_name in self.unallocated_persons and person.identifier == person_id:
                 click.secho("Person is not allocated. Please use 'reallocate unallocated'",
                             fg='yellow', bold=True)
                 return 'unallocated person.'
-        if room_name.title() not in available_rooms:
+        if room_name.capitalize() not in available_rooms:
             click.secho('Room name %s does not exist.' %
                         room_name, fg='red', bold=True)
             return 'Room does not exist.'
@@ -447,7 +425,7 @@ class Dojo(object):
         available_rooms = []
         if not isinstance(room_name, str):
             return 'Error. Please enter valid room name.'
-        room_name = room_name.title()
+        room_name = room_name.capitalize()
         person_id = person_id.upper()
         people_ids = []
         for person in self.people:
@@ -460,7 +438,7 @@ class Dojo(object):
             available_rooms.append(room)
         for room in self.living_spaces['available']:
             available_rooms.append(room)
-        if room_name.title() not in available_rooms:
+        if room_name.capitalize() not in available_rooms:
             click.secho('Room name %s does not exist or is full.' %
                         room_name, fg='red', bold=True)
             return 'Room does not exist.'
