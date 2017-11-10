@@ -70,11 +70,7 @@ class TestDojoFunctionality(unittest.TestCase):
         self.assertEqual(self.dojo.print_allocations(),
                          'Error. No rooms within system.')
     # add_person method testing begins here
-
-    def test_returns_error_if_no_rooms_within_system(self):
-        result = self.dojo.validate_person('Black', 'Canary', 'Fellow', 'Y')
-        self.assertEqual(result, 'There are no rooms in the system.')
-
+    
     def test_validation_of_people_names(self):
         self.dojo.create_room('o', 'hr')
         res = self.dojo.validate_person('Black', 24, 'Fellow', 'y')
@@ -82,7 +78,6 @@ class TestDojoFunctionality(unittest.TestCase):
         self.assertEqual(res, 'Wrong type for name.')
         res2 = self.dojo.validate_person('KH233vc', 'Canary', 'Fellow', 'Y')
         self.assertTrue(res2)
-        self.assertEqual(res2, 'Non-Alphabetical names added')
 
     def test_validation_of_people_types(self):
         self.dojo.create_room('o', 'spacex')
@@ -96,16 +91,6 @@ class TestDojoFunctionality(unittest.TestCase):
             'Tracy', 'Kaloki', 'Fellow', 'No')
         self.assertTrue(res)
         self.assertEqual(res, 'Wants accomodation not Y or N')
-
-    def test_validation_if_person_fellow_and_wants_accomodation(self):
-        '''
-        Both a living space and office must exist for a fellow who
-        wants accomodation.
-        '''
-        self.dojo.create_room('o', 'hr')
-        res = self.dojo.validate_person('Lebron', 'James', 'Fellow', 'Y')
-        self.assertTrue(res)
-        self.assertEqual(res, 'No Living space for fellow requiring both.')
 
     def test_passes_validation_and_creates_person(self):
         # Since there are only two rooms: one of each Living Space and Office
@@ -178,7 +163,7 @@ class TestDojoFunctionality(unittest.TestCase):
         res = self.dojo.validate_person('John', 'Diggle', 'Fellow', 'n')
         person = self.dojo.generate_identifier(res)
         self.dojo.allocate_room(person)
-        res = self.dojo.reallocate_person('F1', 'Villain')
+        res = self.dojo.reallocate_person('F1', 'Uganda')
         self.assertEqual(res, 'Fellow does not want accomodation')
         for room in self.dojo.rooms:
             if room.room_name == 'Uganda':
@@ -203,18 +188,18 @@ class TestDojoFunctionality(unittest.TestCase):
         self.assertEqual(res, 'Invalid person id.')
 
     def test_reallocate_person_works(self):
-        self.dojo.create_room('o', 'dungeo')
+        self.dojo.create_room('o', 'dungeon')
         res = self.dojo.validate_person(
-            'Missy', 'Elliot', 'Staff', 'n')
+            'Missy', 'Elliot', 'fellow', 'n')
         person = self.dojo.generate_identifier(res)
         self.dojo.allocate_room(person)
         self.dojo.create_room('o', 'palace')
-        res = self.dojo.reallocate_person('S1', 'palace')
+        res = self.dojo.reallocate_person('f1', 'palace')
         self.assertEqual(res, 'Person reallocated to Palace')
         for room in self.dojo.rooms:
             if room.room_name == 'dungeon':
                 self.assertNotIn('Missy Elliot', room.occupants)
-            if room.room_name == 'Dungeon':
+            if room.room_name == 'Palace':
                 self.assertIn('Missy Elliot', room.occupants)
 
     def test_reallocate_unallocated(self):

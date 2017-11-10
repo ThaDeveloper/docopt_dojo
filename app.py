@@ -7,6 +7,8 @@ Usage:
     print_room <room_name>
     print_allocations [--o=filename]
     print_unallocated [--o=filename]
+    reallocate_person <person_id> <room_name>
+    reallocate_unallocated <person_id> <room_name>
     (-i | --interactive)
 Options:
     -h --help     Show this screen.
@@ -16,7 +18,7 @@ import os
 import click
 import cmd
 from docopt import docopt, DocoptExit
-from dojo import Dojo
+from src.dojo import Dojo
 
 def parse(func):
     """
@@ -52,7 +54,7 @@ def parse(func):
 
 def start():
 
-    #enter_dojo()
+    #enter_dojo(): dunder doc simply fetches the doctsring and print out all the arguments
     arguments = __doc__
     print(arguments)
 
@@ -120,7 +122,14 @@ class Interactive_Dojo(cmd.Cmd):
             dojo.print_unallocated(filename)
         else:
             dojo.print_unallocated()
-
+    @parse
+    def do_reallocate_person(self, args):
+        """Usage: reallocate_person <person_id> <room_name>"""
+        dojo.reallocate_person(args['<person_id>'], args['<room_name>'])
+    @parse
+    def do_reallocate_unallocated(self, args):
+        """ Usage: reallocate_unallocated <person_id> <room_name> """
+        dojo.reallocate_unallocated(args['<person_id>'], args['<room_name>'])
     def do_exit(self, arg):
         """Quits out of Interactive Mode."""
         click.secho("Thank you for stopping by, Goodbye!", fg='yellow', bold=True)
