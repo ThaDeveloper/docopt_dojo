@@ -120,7 +120,14 @@ class Interactive_Dojo(cmd.Cmd):
             dojo.print_unallocated(filename)
         else:
             dojo.print_unallocated()
-
+    @parse
+    def do_reallocate_person(self, args):
+        """Usage: reallocate_person <person_id> <room_name>"""
+        dojo.reallocate_person(args['<person_id>'], args['<room_name>'])
+    @parse
+    def do_reallocate_unallocated(self, args):
+        """ Usage: reallocate_unallocated <person_id> <room_name> """
+        dojo.reallocate_unallocated(args['<person_id>'], args['<room_name>'])
     def do_exit(self, arg):
         """Quits out of Interactive Mode."""
         click.secho("Thank you for stopping by, Goodbye!", fg='yellow', bold=True)

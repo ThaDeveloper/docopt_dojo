@@ -372,3 +372,105 @@ class Dojo(object):
                     file.write(unallocated)
                     file.write('\n')
                 click.secho('Print out made to %s.txt' % filename, fg='green')
+
+    def reallocate_person(self, person_id, room_name):
+        '''
+        The beginning of the method validates of the data passed
+        is a string and then proceeds to take the person_id and
+        accordingly reallocate them.
+        PERSON_ID which in this case is the identifier
+        is converted to upper case.
+        '''
+        available_rooms = []
+        if not isinstance(room_name, str):
+            return 'Error. Please enter valid room name.'
+        for room in self.offices['available']:
+            available_rooms.append(room)
+        for room in self.living_spaces['available']:
+            available_rooms.append(room)
+        person_id = person_id.upper()
+        room_name = room_name.title()
+        for person in self.people:
+            if person.full_name in self.unallocated_persons and person.identifier == person_id:
+                click.secho("Person is not allocated. Please use 'reallocate unallocated'",
+                            fg='yellow', bold=True)
+                return 'unallocated person.'
+        if room_name.title() not in available_rooms:
+            click.secho('Room name %s does not exist.' %
+                        room_name, fg='red', bold=True)
+            return 'Room does not exist.'
+        for person in self.people:
+            if person.accomodate == 'N' and person.identifier == person_id:
+                if room_name in self.living_spaces['available']:
+                    click.secho(
+                        'Cant move person from office to living space',
+                        fg='red', bold=True)
+                    return 'Fellow does not want accomodation'
+        all_person_ids = []
+        for person in self.people:
+            all_person_ids.append(person.identifier)
+            if person.identifier == person_id:
+                person_name = person.full_name
+        if person_id not in all_person_ids:
+            click.secho('Person ID entered does not exist.',
+                        fg='red', bold=True)
+            return "Invalid person id."
+        for person in self.people:
+            if person.identifier == person_id:
+                wanted_name = person.full_name
+        for room in self.rooms:
+            if wanted_name in room.occupants and \
+                    room.room_name == room_name:
+                click.secho('You cannot be reallocated to the same room.',
+                            fg='red', bold=True)
+                return 'cant reallocate to same room'
+        if room_name in self.offices['available']:
+            room_t = 'Office'
+        if room_name in self.living_spaces['available']:
+            room_t = 'Living Space'
+        for room in self.rooms:
+            if person_name in room.occupants and room_t == room.room_type:
+                current_room = room.room_name
+                room.occupants.remove(person_name)
+
+        # Reallocate to actual room
+        for room in self.rooms:
+            if room.room_name == room_name and room.capacity > 0:
+                room.capacity = room.add_person(person_name)
+                click.secho('%s has been reallocated from %s to %s.' %
+                            (person_name, current_room, room.room_name),
+                            fg='green', bold=True)
+                return 'Person reallocated to %s' % room_name
+
+    def reallocate_unallocated(self, person_id, room_name):
+        # Reallocate someone who is in the unallocated section
+        available_rooms = []
+        if not isinstance(room_name, str):
+            return 'Error. Please enter valid room name.'
+        room_name = room_name.title()
+        person_id = person_id.upper()
+        people_ids = []
+        for person in self.people:
+            people_ids.append(person.identifier)
+        if person_id not in people_ids:
+            click.secho('Person ID does not exist', fg='red', bold=True)
+            return 'Person ID does not exist.'
+
+        for room in self.offices['available']:
+            available_rooms.append(room)
+        for room in self.living_spaces['available']:
+            available_rooms.append(room)
+        if room_name.title() not in available_rooms:
+            click.secho('Room name %s does not exist or is full.' %
+                        room_name, fg='red', bold=True)
+            return 'Room does not exist.'
+        for person in self.people:
+            if person.full_name in self.unallocated_persons and \
+                    person.identifier == person_id:
+                unallocated_person = person.full_name
+        for room in self.rooms:
+            if room.room_name == room_name:
+                room.occupants.append(unallocated_person)
+                self.unallocated_persons.remove(unallocated_person)
+                click.secho('%s reallocated to %s' % (
+                    unallocated_person, room_name), fg='green', bold=True)

@@ -178,7 +178,7 @@ class TestDojoFunctionality(unittest.TestCase):
         res = self.dojo.validate_person('John', 'Diggle', 'Fellow', 'n')
         person = self.dojo.generate_identifier(res)
         self.dojo.allocate_room(person)
-        res = self.dojo.reallocate_person('F1', 'Villain')
+        res = self.dojo.reallocate_person('F1', 'Uganda')
         self.assertEqual(res, 'Fellow does not want accomodation')
         for room in self.dojo.rooms:
             if room.room_name == 'Uganda':
