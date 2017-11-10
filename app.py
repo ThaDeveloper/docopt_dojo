@@ -7,6 +7,8 @@ Usage:
     print_room <room_name>
     print_allocations [--o=filename]
     print_unallocated [--o=filename]
+    reallocate_person <person_id> <room_name>
+    reallocate_unallocated <person_id> <room_name>
     (-i | --interactive)
 Options:
     -h --help     Show this screen.
@@ -16,7 +18,7 @@ import os
 import click
 import cmd
 from docopt import docopt, DocoptExit
-from dojo import Dojo
+from src.dojo import Dojo
 
 def parse(func):
     """
@@ -52,7 +54,7 @@ def parse(func):
 
 def start():
 
-    #enter_dojo()
+    #enter_dojo(): dunder doc simply fetches the doctsring and print out all the arguments
     arguments = __doc__
     print(arguments)
 
