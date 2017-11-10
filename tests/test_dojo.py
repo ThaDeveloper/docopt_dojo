@@ -188,18 +188,18 @@ class TestDojoFunctionality(unittest.TestCase):
         self.assertEqual(res, 'Invalid person id.')
 
     def test_reallocate_person_works(self):
-        self.dojo.create_room('o', 'dungeo')
+        self.dojo.create_room('o', 'dungeon')
         res = self.dojo.validate_person(
-            'Missy', 'Elliot', 'Staff', 'n')
+            'Missy', 'Elliot', 'fellow', 'n')
         person = self.dojo.generate_identifier(res)
         self.dojo.allocate_room(person)
         self.dojo.create_room('o', 'palace')
-        res = self.dojo.reallocate_person('S1', 'palace')
+        res = self.dojo.reallocate_person('f1', 'palace')
         self.assertEqual(res, 'Person reallocated to Palace')
         for room in self.dojo.rooms:
             if room.room_name == 'dungeon':
                 self.assertNotIn('Missy Elliot', room.occupants)
-            if room.room_name == 'Dungeon':
+            if room.room_name == 'Palace':
                 self.assertIn('Missy Elliot', room.occupants)
 
     def test_reallocate_unallocated(self):
