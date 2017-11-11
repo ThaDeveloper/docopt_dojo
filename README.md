@@ -2,6 +2,7 @@ __DOCOPT_DOJO__
 
 [![Build Status](https://travis-ci.org/ThaDeveloper/docopt_dojo.svg?branch=master)](https://travis-ci.org/ThaDeveloper/docopt_dojo)
 [![Coverage Status](https://coveralls.io/repos/github/ThaDeveloper/docopt_dojo/badge.svg?branch=master)](https://coveralls.io/github/ThaDeveloper/docopt_dojo?branch=master)
+[![Codacy Badge](https://api.codacy.com/project/badge/Grade/d8a41c518a9f493cba775e1e97f3e655)](https://www.codacy.com/app/ThaDeveloper/docopt_dojo?utm_source=github.com&amp;utm_medium=referral&amp;utm_content=ThaDeveloper/docopt_dojo&amp;utm_campaign=Badge_Grade)
 
 Docopt command line in python: Room alloction in the terminal
 
