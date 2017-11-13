@@ -9,6 +9,7 @@ Usage:
     print_unallocated [--o=filename]
     reallocate_person <person_id> <room_name>
     reallocate_unallocated <person_id> <room_name>
+    load_people <filename>
     (-i | --interactive)
 Options:
     -h --help     Show this screen.
@@ -18,7 +19,7 @@ import os
 import click
 import cmd
 from docopt import docopt, DocoptExit
-from src.dojo import Dojo
+from dojo import Dojo
 
 def parse(func):
     """
@@ -130,6 +131,46 @@ class Interactive_Dojo(cmd.Cmd):
     def do_reallocate_unallocated(self, args):
         """ Usage: reallocate_unallocated <person_id> <room_name> """
         dojo.reallocate_unallocated(args['<person_id>'], args['<room_name>'])
+
+    @parse
+    def do_load_people(self, args):
+        """Usage: load_people <filename>"""
+
+        if os.path.exists(args['<filename>']):
+            filename = args['<filename>']
+            with open(filename, "r") as file:
+                lines = file.readlines()
+                for line in lines:
+                    person_details = line.split()
+                    if len(person_details) == 3:
+                        first_name = person_details[0]
+                        last_name = person_details[1]
+                        role = person_details[2]
+                        accomodate = "N"
+                        validated_details = dojo.validate_person(first_name=first_name,
+                                                                  last_name=last_name,
+                                                                  role=role,
+                                                                  accomodate=accomodate)
+                        if isinstance(validated_details, list):
+                            person = dojo.generate_identifier(
+                                validated_details)
+                            dojo.allocate_room(person)
+                    elif len(person_details) == 4:
+                        first_name = person_details[0]
+                        last_name = person_details[1]
+                        role = person_details[2]
+                        accomodate = person_details[3]
+                        validated_details = dojo.validate_person(first_name=first_name,
+                                                                  last_name=last_name,
+                                                                  role=role,
+                                                                  accomodate=accomodate)
+                        if isinstance(validated_details, list):
+                            person = dojo.generate_identifier(
+                                validated_details)
+                            dojo.allocate_room(person)
+                    else:
+                        print("An error occurred")
+
     def do_exit(self, arg):
         """Quits out of Interactive Mode."""
         click.secho("Thank you for stopping by, Goodbye!", fg='yellow', bold=True)
