@@ -89,6 +89,8 @@ $ python app.py
 
 [Justin Ndwiga](https://github.com/ThaDeveloper)
 
+The amazing fellows at [Andela](https://www.andela.com)
+
 ## License
 
 ### MIT License
