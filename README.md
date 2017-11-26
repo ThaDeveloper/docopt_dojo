@@ -1,10 +1,10 @@
-__DOCOPT_DOJO__
+# Docopt Dojo
 
 [![Build Status](https://travis-ci.org/ThaDeveloper/docopt_dojo.svg?branch=master)](https://travis-ci.org/ThaDeveloper/docopt_dojo)
 [![Coverage Status](https://coveralls.io/repos/github/ThaDeveloper/docopt_dojo/badge.svg?branch=master)](https://coveralls.io/github/ThaDeveloper/docopt_dojo?branch=master)
 [![Codacy Badge](https://api.codacy.com/project/badge/Grade/d8a41c518a9f493cba775e1e97f3e655)](https://www.codacy.com/app/ThaDeveloper/docopt_dojo?utm_source=github.com&amp;utm_medium=referral&amp;utm_content=ThaDeveloper/docopt_dojo&amp;utm_campaign=Badge_Grade)
 
-Docopt command line in python: Room alloction in the terminal
+Docopt Dojo is a command-line Room Alloction System.
 
 __*Statement*__
 
@@ -45,6 +45,51 @@ An office called Brown has been successfully created!
 ```
 
 ![alt text](https://github.com/ThaDeveloper/docopt_dojo/blob/master/assets/test_sample.png "Test sample output")
+
+## Installation
+
+To set up dojo, make sure that you have python and pip installed.
+
+Use [virtualenv](http://www.pythonforbeginners.com/basics/how-to-use-python-virtualenv) for an isolated working environment.
+
+Clone the Repo into a folder of your choice
+```
+git clone https://github.com/ThaDeveloper/docopt_dojo.git
+```
+
+Create a virtual enviroment.
+```
+virtualenv venv
+```
+
+Navigate to the root folder.
+```
+cd docopt_dojo
+```
+
+Install the packages.
+```
+pip install -r requirements.txt
+```
+
+Confirm your installed packages
+```bash
+$ pip freeze
+```
+
+## Usage
+
+To get the app running...
+
+```bash
+$ python app.py
+```
+
+## Credits
+
+[Justin Ndwiga](https://github.com/ThaDeveloper)
+
+## License
 
 ### MIT License
 
